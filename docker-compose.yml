@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  mariadb:
+    image: mariadb:10.3
+    container_name: mariadb
+    command: --max_allowed_packet=32505856
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    restart: unless-stopped
+    volumes:
+      - ./sql_dump:/docker-entrypoint-initdb.d
+      - ./data_mariadb:/var/lib/mysql
+  web:
+    build:
+      context: ./docker
+    image: qmweb
+    container_name: php_web
+    depends_on:
+      - mariadb
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - "443:443"
+    stdin_open: true
+    tty: true
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: pma
+    depends_on:
+      - mariadb
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8001:80
