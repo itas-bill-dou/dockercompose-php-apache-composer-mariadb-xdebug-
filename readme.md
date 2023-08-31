@@ -1,4 +1,12 @@
-# Usage
+# Introduction
+This repository serves as a foundational project designed to streamline the configuration process for the following components:
+- PHP 8.1
+- Apache web server
+- PHP Composer
+- SSL
+- Remote XDebug
+- Mariadb
+- PHPMyAdmin
 
 ## Build images and launch containers
 ```
